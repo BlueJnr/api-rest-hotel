@@ -1,6 +1,7 @@
 package com.bluejnr.hotel.controller;
 
 import com.bluejnr.hotel.exception.RestrictionException;
+import com.bluejnr.hotel.exception.TransitionException;
 import com.bluejnr.hotel.model.domain.Reservation;
 import com.bluejnr.hotel.model.domain.Room;
 import com.bluejnr.hotel.service.UserService;
@@ -23,7 +24,7 @@ public class UserController {
 
     @PatchMapping(value = "/{id}/state-transition")
     @ResponseStatus(HttpStatus.OK)
-    public Room stateTransition(@PathVariable("id") Integer userId, @RequestBody Room resource) throws RestrictionException {
+    public Room stateTransition(@PathVariable("id") Integer userId, @RequestBody Room resource) throws RestrictionException, TransitionException {
         return userService.stateTransition(userId, resource);
     }
 

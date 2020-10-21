@@ -1,6 +1,7 @@
 package com.bluejnr.hotel.service.impl;
 
 import com.bluejnr.hotel.exception.RestrictionException;
+import com.bluejnr.hotel.exception.TransitionException;
 import com.bluejnr.hotel.model.domain.*;
 import com.bluejnr.hotel.repository.ReservationRepository;
 import com.bluejnr.hotel.repository.RoomRepository;
@@ -8,8 +9,6 @@ import com.bluejnr.hotel.repository.UserRepository;
 import com.bluejnr.hotel.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -27,9 +26,39 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Room stateTransition(Integer userId, Room room) throws RestrictionException {
+    public Room stateTransition(Integer userId, Room room) throws RestrictionException, TransitionException {
         validUser((userId));
+        validStateTransition(room);
         return parse(roomRepository.save(parse(room)));
+    }
+
+    private void validStateTransition(Room room) throws TransitionException {
+        Room roomValidate = parse(roomRepository.findById(room.getId()).get());
+
+        boolean result = false;
+
+        switch (roomValidate.getState()){
+            case FREE:
+                result = (room.getState() == State.BUSY ||room.getState() == State.MAINTENANCE);
+                break;
+            case BUSY:
+                result = (room.getState() == State.MAINTENANCE ||room.getState() == State.CLEANING);
+                break;
+            case CLEANING:
+                result = (room.getState() == State.FREE ||room.getState() == State.MAINTENANCE);
+                break;
+            case MAINTENANCE:
+                result = (room.getState() == State.FREE ||room.getState() == State.CLEANING);
+                break;
+            default:
+                break;
+        }
+
+        if(!result){
+            throw new TransitionException("Transition from state " + roomValidate.getState().name()
+                    + " to state " + room.getState().name() + " is a bad request");
+        }
+
     }
 
     private void validUser(Integer userId) throws RestrictionException {

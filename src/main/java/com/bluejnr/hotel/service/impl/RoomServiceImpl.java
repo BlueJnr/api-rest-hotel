@@ -34,7 +34,7 @@ public class RoomServiceImpl implements RoomService {
     public List<Room> getRoomByState(String state) {
         return getAllRooms()
                 .stream()
-                .filter(room -> state.equals(room.getType().name()))
+                .filter(room -> state.equals(room.getState().name()))
                 .collect(Collectors.toList());
     }
 
