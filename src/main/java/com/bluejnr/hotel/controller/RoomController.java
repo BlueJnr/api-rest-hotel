@@ -1,6 +1,6 @@
 package com.bluejnr.hotel.controller;
 
-import com.bluejnr.hotel.model.entity.Room;
+import com.bluejnr.hotel.model.domain.Room;
 import com.bluejnr.hotel.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,30 +16,40 @@ public class RoomController {
     private RoomService roomService;
 
     @GetMapping
-    public List<Room> getTasks() {
+    public List<Room> getAllRooms() {
         return roomService.getAllRooms();
     }
 
     @GetMapping(value = "/{id}")
-    public Room findById(@PathVariable("id") Integer id) {
+    public Room getRoomById(@PathVariable("id") Integer id) {
         return roomService.getRoomById(id);
+    }
+
+    @GetMapping(value = "/state/{state}")
+    public List<Room> getRoomByState(@PathVariable("state") String state) {
+        return roomService.getRoomByState(state);
+    }
+
+    @GetMapping(value = "/type/{type}")
+    public List<Room> getRoomByType(@PathVariable("type") String type) {
+        return roomService.getRoomByType(type);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Room create(@RequestBody Room resource) {
+    public Room createRoom(@RequestBody Room resource) {
         return roomService.createRoom(resource);
     }
 
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
-    public Room update(@RequestBody Room resource) {
+    public Room updateRoom(@RequestBody Room resource) {
         return roomService.updateRoom(resource);
     }
 
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void delete(@PathVariable("id") Integer id) {
+    public void deleteRoomById(@PathVariable("id") Integer id) {
         roomService.deleteRoomById(id);
     }
 }

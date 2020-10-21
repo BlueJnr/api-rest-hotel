@@ -11,13 +11,13 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Room {
+public class Reservation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String type;
-    private String state;
+    private Integer userId;
+    private Integer roomId;
 
     public Integer getId() {
         return id;
@@ -27,19 +27,19 @@ public class Room {
         this.id = id;
     }
 
-    public String getType() {
-        return type;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
-    public String getState() {
-        return state;
+    public Integer getRoomId() {
+        return roomId;
     }
 
-    public void setState(String state) {
-        this.state = state;
+    public void setRoomId(Integer roomId) {
+        this.roomId = roomId;
     }
 }

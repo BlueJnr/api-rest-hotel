@@ -1,6 +1,5 @@
 package com.bluejnr.hotel.model.domain;
 
-
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,10 +7,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class Room {
+public class Reservation {
 
     private Integer id;
-    private Type type;
-    private State state;
-
+    private Integer userId;
+    private Integer roomId;
 }
