@@ -1,5 +1,6 @@
 package com.bluejnr.hotel.error;
 
+import com.bluejnr.hotel.exception.LimitationException;
 import com.bluejnr.hotel.exception.RestrictionException;
 import com.bluejnr.hotel.exception.TransitionException;
 import com.bluejnr.hotel.model.api.ErrorResponse;
@@ -14,6 +15,12 @@ public class RestExceptionHandler {
     @ExceptionHandler(RestrictionException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleBadRequest(RestrictionException e){
+        return new ErrorResponse(400, e.getMessage());
+    }
+
+    @ExceptionHandler(LimitationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleLimitBadRequest(LimitationException e){
         return new ErrorResponse(400, e.getMessage());
     }
 

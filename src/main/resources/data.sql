@@ -2,7 +2,8 @@ DROP TABLE IF EXISTS room;
 CREATE TABLE room (
   id INT AUTO_INCREMENT  PRIMARY KEY,
   type VARCHAR(250) NOT NULL,
-  state VARCHAR(250) NOT NULL
+  state VARCHAR(250) NOT NULL,
+  occupants INT NOT NULL
 );
 
 DROP TABLE IF EXISTS user;
@@ -18,11 +19,11 @@ CREATE TABLE reservation (
   room_id INT NOT NULL
 );
 
-INSERT INTO room (type, state) VALUES
-  ('STANDARD', 'FREE'),
-  ('NORMAL', 'MAINTENANCE'),
-  ('NORMAL', 'BUSY'),
-  ('SUITE', 'CLEANING');
+INSERT INTO room (type, state, occupants) VALUES
+  ('STANDARD', 'FREE', 3),
+  ('NORMAL', 'MAINTENANCE', 2),
+  ('NORMAL', 'OCCUPIED', 1),
+  ('SUITE', 'CLEANING', 5);
 
 INSERT INTO user (rol) VALUES
   ('MANAGER'),

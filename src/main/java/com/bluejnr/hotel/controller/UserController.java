@@ -1,5 +1,6 @@
 package com.bluejnr.hotel.controller;
 
+import com.bluejnr.hotel.exception.LimitationException;
 import com.bluejnr.hotel.exception.RestrictionException;
 import com.bluejnr.hotel.exception.TransitionException;
 import com.bluejnr.hotel.model.domain.Reservation;
@@ -18,7 +19,7 @@ public class UserController {
 
     @PostMapping(value = "/{id}/book")
     @ResponseStatus(HttpStatus.CREATED)
-    public Reservation bookRoom(@PathVariable("id") Integer userId, @RequestBody Reservation resource) {
+    public Reservation bookRoom(@PathVariable("id") Integer userId, @RequestBody Reservation resource) throws LimitationException {
         return userService.bookRoom(userId, resource);
     }
 

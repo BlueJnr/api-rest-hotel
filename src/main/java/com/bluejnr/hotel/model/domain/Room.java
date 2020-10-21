@@ -13,5 +13,6 @@ public class Room {
     private Integer id;
     private Type type;
     private State state;
+    private Integer occupants;
 
 }

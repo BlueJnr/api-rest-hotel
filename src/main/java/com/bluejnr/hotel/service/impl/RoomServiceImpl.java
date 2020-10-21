@@ -65,6 +65,7 @@ public class RoomServiceImpl implements RoomService {
                 .id(room.getId())
                 .type(Type.valueOf(room.getType()))
                 .state(State.valueOf(room.getState()))
+                .occupants(room.getOccupants())
                 .build();
     }
 
@@ -74,6 +75,7 @@ public class RoomServiceImpl implements RoomService {
                 .id(room.getId())
                 .type(room.getType().name())
                 .state(room.getState().name())
+                .occupants(room.getOccupants())
                 .build();
     }
 }

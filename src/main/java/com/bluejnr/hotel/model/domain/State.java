@@ -3,7 +3,7 @@ package com.bluejnr.hotel.model.domain;
 public enum State {
 
     FREE,
-    BUSY,
+    OCCUPIED,
     MAINTENANCE,
     CLEANING;
 }

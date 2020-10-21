@@ -1,5 +1,6 @@
 package com.bluejnr.hotel.service.impl;
 
+import com.bluejnr.hotel.exception.LimitationException;
 import com.bluejnr.hotel.exception.RestrictionException;
 import com.bluejnr.hotel.exception.TransitionException;
 import com.bluejnr.hotel.model.domain.*;
@@ -21,8 +22,24 @@ public class UserServiceImpl implements UserService {
     private RoomRepository roomRepository;
 
     @Override
-    public Reservation bookRoom(Integer userId, Reservation reservation) {
+    public Reservation bookRoom(Integer userId, Reservation reservation) throws LimitationException {
+        validReservation(reservation);
         return parse(reservationRepository.save(parse(reservation)));
+    }
+
+    private void validReservation(Reservation reservation) throws LimitationException {
+        Room roomValidate = parse(roomRepository.findById(reservation.getRoomId()).get());
+
+        if(roomValidate.getType().getValue() > roomValidate.getOccupants()){
+            roomValidate.setOccupants(roomValidate.getOccupants()+1);
+            if(roomValidate.getType().getValue() == roomValidate.getOccupants()){
+                roomValidate.setState(State.OCCUPIED);
+            }
+            roomRepository.save(parse(roomValidate));
+        } else {
+            throw new LimitationException("The " + roomValidate.getType().name()
+                    + " Room already has " + roomValidate.getType().getValue() + " occupants");
+        }
     }
 
     @Override
@@ -39,9 +56,9 @@ public class UserServiceImpl implements UserService {
 
         switch (roomValidate.getState()){
             case FREE:
-                result = (room.getState() == State.BUSY ||room.getState() == State.MAINTENANCE);
+                result = (room.getState() == State.OCCUPIED ||room.getState() == State.MAINTENANCE);
                 break;
-            case BUSY:
+            case OCCUPIED:
                 result = (room.getState() == State.MAINTENANCE ||room.getState() == State.CLEANING);
                 break;
             case CLEANING:
@@ -80,6 +97,7 @@ public class UserServiceImpl implements UserService {
                 .id(room.getId())
                 .state(room.getState().name())
                 .type(room.getType().name())
+                .occupants(room.getOccupants())
                 .build();
     }
     private Room parse(com.bluejnr.hotel.model.entity.Room room) {
@@ -87,6 +105,7 @@ public class UserServiceImpl implements UserService {
                 .id(room.getId())
                 .state(State.valueOf(room.getState()))
                 .type(Type.valueOf(room.getType()))
+                .occupants(room.getOccupants())
                 .build();
     }
 

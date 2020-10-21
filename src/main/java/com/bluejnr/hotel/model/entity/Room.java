@@ -18,6 +18,7 @@ public class Room {
     private Integer id;
     private String type;
     private String state;
+    private Integer occupants;
 
     public Integer getId() {
         return id;
@@ -41,5 +42,13 @@ public class Room {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public Integer getOccupants() {
+        return occupants;
+    }
+
+    public void setOccupants(Integer occupants) {
+        this.occupants = occupants;
     }
 }
