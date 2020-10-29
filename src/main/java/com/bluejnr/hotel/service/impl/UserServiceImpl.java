@@ -71,6 +71,8 @@ public class UserServiceImpl implements UserService {
                 break;
         }
 
+        room.setOccupants(roomValidate.getOccupants());
+
         if(!result){
             throw new TransitionException("Transition from state " + roomValidate.getState().name()
                     + " to state " + room.getState().name() + " is a bad request");
